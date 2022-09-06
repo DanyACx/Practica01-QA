@@ -2,18 +2,22 @@ package seleniumgluecode;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import runner.browser_manager.DriverManager;
+import runner.browser_manager.DriverManagerFactory;
+import runner.browser_manager.DriverType;
 
 public class Hooks {
 
-    private static ChromeDriver driver;
+    private static WebDriver driver;
+
+    private DriverManager driverManager;
 
     @Before
     public void setUp() {
-
-        System.setProperty("webdriver.chrome.driver", "./src/test/chromedriver/chromedriver.exe");
-
-        driver = new ChromeDriver();
+        driverManager = DriverManagerFactory.getManager(DriverType.OPERA);
+        driver = driverManager.getDriver();
         driver.get("https://imalittletester.com/");
         driver.manage().window().maximize();
     }
@@ -21,10 +25,10 @@ public class Hooks {
     @After
     public void tearDown() {
 
-        driver.quit();
+        driverManager.quitDriver();
     }
 
-    public static ChromeDriver getDriver() {
+    public static WebDriver getDriver() {
         return driver;
     }
 }
